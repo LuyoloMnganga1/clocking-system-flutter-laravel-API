@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClockingController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClockingReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,11 @@ Route::post('login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::post('clock-in', [ClockingController::class, 'clockIn']);
     Route::post('clock-out', [ClockingController::class, 'clockOut']);
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::get('report', [ClockingReportController::class, 'getReport'])->middleware('admin');
+    Route::get('export-report', [ClockingReportController::class, 'exportReport'])->middleware('admin');
 });

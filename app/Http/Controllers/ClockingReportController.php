@@ -1,9 +1,11 @@
+<?php
 namespace App\Http\Controllers;
 
 use App\Models\Clocking;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ClockingsExport;
+use Carbon\Carbon;
 
 class ClockingReportController extends Controller
 {
@@ -15,6 +17,6 @@ class ClockingReportController extends Controller
 
     public function exportReport()
     {
-        return Excel::download(new ClockingsExport, 'clockings.xlsx');
+        return Excel::download(new ClockingsExport, Carbon::now().'clockings.xlsx');
     }
 }
