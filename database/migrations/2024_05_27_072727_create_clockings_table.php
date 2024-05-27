@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('clockings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamp('clock_in')->nullable();
+            $table->timestamp('clock_out')->nullable();
+            $table->string('location_in')->nullable();
+            $table->string('location_out')->nullable();
             $table->timestamps();
         });
     }
