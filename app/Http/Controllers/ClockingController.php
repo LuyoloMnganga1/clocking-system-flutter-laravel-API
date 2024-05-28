@@ -18,6 +18,18 @@ class ClockingController extends Controller
 
         return response()->json(['message' => 'Clocked in successfully']);
     }
+    public function checkClockInStatus()
+    {
+        $user = Auth::user();
+        $today = Carbon::now()->startOfDay();
+
+        $clockIn = Clocking::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->whereNotNull('clock_in_time')
+            ->first();
+
+        return response()->json($clockIn ? true : false);
+    }
 
     public function clockOut(Request $request)
     {
@@ -34,5 +46,18 @@ class ClockingController extends Controller
         }
 
         return response()->json(['message' => 'No active clock-in found'], 404);
+    }
+
+    public function getWeeklyClockings()
+    {
+        $user = Auth::user();
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+
+        $clockings = Clocking::where('user_id', $user->id)
+            ->whereBetween('date', [$startOfWeek, $endOfWeek])
+            ->get();
+
+        return response()->json($clockings);
     }
 }
