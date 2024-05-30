@@ -31,8 +31,8 @@ Route::post('password/reset/confirm', [PasswordResetController::class, 'reset'])
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('clock-in', [ClockingController::class, 'clockIn']);
     Route::post('clock-out', [ClockingController::class, 'clockOut']);
-    Route::get('clockings/check', [ClockingController::class, 'checkClockInStatus']);
-    Route::get('clockings/weekly', [ClockingController::class, 'getWeeklyClockings']);
+    Route::get('clockings/check/{id}', [ClockingController::class, 'checkClockInStatus']);
+    Route::get('clockings/weekly/{id}', [ClockingController::class, 'getWeeklyClockings']);
     Route::get('report', [ClockingReportController::class, 'getReport'])->middleware('admin');
     Route::get('export-report', [ClockingReportController::class, 'exportReport'])->middleware('admin');
 
