@@ -10,9 +10,11 @@ class ClockingController extends Controller
 {
     public function clockIn(Request $request)
     {
+        $now =Carbon::now()->addHours(2);
         $clocking = new Clocking();
         $clocking->user_id = $request->user_id;
-        $clocking->clock_in = Carbon::now();
+        $clocking->date = Carbon::now()->toDateString();
+        $clocking->clock_in = $now->toTimeString();
         $clocking->location_in = $request->location_in;
         $clocking->save();
 
@@ -34,13 +36,14 @@ class ClockingController extends Controller
     public function clockOut(Request $request)
     {
         $today = Carbon::today();
+        $now = Carbon::now()->addHours(2);
         $clocking = Clocking::where('user_id', $request->user_id)
                             ->whereDate('created_at', $today)
                             ->whereNull('clock_out')
                             ->first();
 
         if ($clocking) {
-            $clocking->clock_out = Carbon::now();
+            $clocking->clock_out =$now->toTimeString();
             $clocking->location_out = $request->location_out;
             $clocking->save();
 
